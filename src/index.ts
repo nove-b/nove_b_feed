@@ -59,7 +59,7 @@ async function fetchAndPost() {
 
     for (const url of rssUrls) {
 
-      const feed = await parser.parseURL(url);
+      const feed = await parser.parseURL(encodeURI(url));
       if (feed.items.length === 0) {
         console.log(`No items found in RSS feed: ${url}`);
         continue;
@@ -73,7 +73,6 @@ async function fetchAndPost() {
         }
 
         const status = `🎉 ${post.title} 🎉\n🔗 ${post.link}`;
-
         await axios.post(
           MASTODON_API_URL,
           { status },
