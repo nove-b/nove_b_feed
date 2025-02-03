@@ -73,18 +73,21 @@ async function fetchAndPost() {
         }
 
         const status = `🎉 ${post.title} 🎉\n🔗 ${post.link}`;
-        await axios.post(
-          MASTODON_API_URL,
-          { status },
-          {
-            headers: {
-              Authorization: `Bearer ${ACCESS_TOKEN}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log(`Successfully posted: ${post.title}`);
+        try {
+          const response = await axios.post(
+            MASTODON_API_URL,
+            { status, visibility: "public" },
+            {
+              headers: {
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(`Successfully posted: ${post.title}`, response.data);
+        } catch (error:any) {
+          console.error("Error posting to Mastodon:", error.response?.data || error.message);
+        }
         postedUrls.add(post.link);
         hasNewPost = true;
       }
