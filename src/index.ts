@@ -22,8 +22,8 @@ const POSTED_URLS_FILE = "posted_urls.json";
 async function fetchRssUrls(): Promise<Feed[]> {
   try {
     const response = await axios.get(RSS_API_URL);
-    return response.data.map((item: { titile: string; url: string; tags: string[] }) => ({
-      title: item.titile, // APIのtypoを修正
+    return response.data.map((item: Feed) => ({
+      title: item.title, 
       url: item.url,
       tags: item.tags || [],
     }));
